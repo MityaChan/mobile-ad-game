@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Треш-Креативщик V5.1: Усталость и Недели!</title> <!-- V5.1 -->
+    <style>
+        /* CSS без изменений */
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap');
+        :root { /* ...переменные... */
+             --primary-color: #e74c3c; --secondary-color: #3498db; --income-color: #2ecc71; --cost-color: #f39c12; --background-light: #f4f6f9; --background-white: #ffffff; --text-dark: #2c3e50; --text-light: #555; --border-color: #dfe4ea; --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.08); --card-hover-shadow: 0 6px 12px rgba(0, 0, 0, 0.12); --selected-border: 3px solid var(--secondary-color);
+         }
+         body { font-family: 'Nunito', sans-serif; background-color: var(--background-light); color: var(--text-dark); line-height: 1.6; min-height: 100vh; padding: 20px; box-sizing: border-box; }
+         .stats-sticky-wrapper { position: sticky; top: 10px; z-index: 100; margin-bottom: 20px; }
+         .stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; background-color: var(--background-white); padding: 12px 15px; border-radius: 10px; font-weight: 700; box-shadow: 0 3px 8px rgba(0,0,0,0.1); text-align: center; border: 1px solid var(--border-color); max-width: 850px; margin: 0 auto; cursor: default; }
+         .stats div { font-size: 1.0em; }
+         .stats span { font-size: 1.1em; display: inline-block; margin-top: 3px; font-weight: 700; transition: color 0.15s ease-out, transform 0.15s ease-out; }
+         #budget { color: var(--primary-color); } #audience-size { color: var(--secondary-color); } #daily-income { color: var(--income-color); } #weekly-income { color: var(--income-color); } #week { color: var(--text-light); }
+         .container { background-color: var(--background-white); padding: 30px; border-radius: 12px; box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1); width: 100%; max-width: 850px; margin: 0 auto; }
+         h1, h2 { text-align: center; margin-bottom: 20px; color: var(--text-dark); }
+         h1 { color: var(--primary-color); font-weight: 700; margin-top: 0; } h2 { color: var(--secondary-color); margin-top: 30px; } h3 { margin-bottom: 15px; color: var(--text-light); border-bottom: 1px solid var(--border-color); padding-bottom: 5px; font-size: 1.2em; }
+         .ad-creator { margin-bottom: 25px; } .option-group { margin-bottom: 25px; }
+         .card-container { display: flex; flex-wrap: wrap; gap: 15px; justify-content: center; }
+         .card { background-color: var(--background-white); border: 1px solid var(--border-color); border-radius: 8px; padding: 15px; cursor: pointer; transition: all 0.2s ease-in-out; box-shadow: var(--card-shadow); flex: 1 1 115px; min-width: 115px; text-align: center; display: flex; flex-direction: column; align-items: center; justify-content: space-between; }
+         .card:hover { transform: translateY(-3px) scale(1.03); box-shadow: var(--card-hover-shadow); }
+         .card.selected { border: var(--selected-border); box-shadow: var(--card-hover-shadow); background-color: #e9f5ff; transform: scale(1.05); }
+         .card-icon { font-size: 2.5em; margin-bottom: 10px; line-height: 1; } .card-title { font-weight: 700; margin-bottom: 5px; font-size: 0.9em; color: var(--text-dark); } .card-desc { font-size: 0.75em; color: var(--text-light); min-height: 30px; }
+         .card[data-category="style"] .card-icon { font-size: 2em; }
+         .cost-summary { margin-top: 20px; padding: 15px; background-color: #f8f9fa; border-radius: 8px; border: 1px solid var(--border-color); display: grid; grid-template-columns: 1fr 1fr; gap: 15px; align-items: center; margin-bottom: 15px; }
+         .cost-item { text-align: center; } .cost-item label { font-weight: 700; color: var(--text-light); display: block; margin-bottom: 5px; font-size: 0.9em; } .cost-item span, .cost-item input { font-size: 1.2em; font-weight: 700; }
+         #creative-cost-display { color: var(--cost-color); } #campaign-cost { padding: 8px; border: 1px solid var(--border-color); border-radius: 4px; box-sizing: border-box; width: 110px; text-align: right; }
+         .ad-preview { margin-top: 15px; text-align: center; margin-bottom: 15px; } .ad-preview h4 { margin: 0 0 5px 0; color: var(--text-light); font-size: 0.9em; font-weight: normal;} .preview-icons { font-size: 1.8em; word-spacing: 10px; min-height: 35px; line-height: 1; }
+         .action-buttons { display: flex; gap: 15px; margin-top: 25px; }
+         #launch-button, #skip-week-button { flex-grow: 1; padding: 15px 20px; border: none; border-radius: 8px; font-size: 1.1em; font-weight: 700; cursor: pointer; transition: all 0.3s ease; text-align: center; } /* Correct ID used */
+         #launch-button { background: linear-gradient(45deg, var(--primary-color), #f56555); color: white; box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3); }
+         #launch-button:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(231, 76, 60, 0.4); } #launch-button:active:not(:disabled) { transform: translateY(0px); box-shadow: 0 2px 5px rgba(231, 76, 60, 0.2); } #launch-button:disabled { background: #bdc3c7; cursor: not-allowed; box-shadow: none; color: #7f8c8d; }
+         #skip-week-button { background-color: var(--secondary-color); color: white; box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3); }
+         #skip-week-button:hover:not(:disabled) { background-color: #4ba3e1; transform: translateY(-2px); box-shadow: 0 6px 15px rgba(52, 152, 219, 0.4); } #skip-week-button:active:not(:disabled) { background-color: #2a88c9; transform: translateY(0px); box-shadow: 0 2px 5px rgba(52, 152, 219, 0.2); } #skip-week-button:disabled { background: #bdc3c7; cursor: not-allowed; box-shadow: none; color: #7f8c8d;}
+         .results { opacity: 0; transform: translateY(15px); transition: opacity 0.4s ease-out, transform 0.4s ease-out; pointer-events: none; background-color: #e8f6fd; border: 1px solid #bde0fe; padding: 20px; border-radius: 8px; margin-top: 30px; min-height: 120px; position: relative; overflow: hidden; }
+         .results.visible { opacity: 1; transform: translateY(0); pointer-events: auto; }
+         .results h2 { margin-top: 0; color: #1e87f0; }
+         #result-message { font-style: italic; margin-bottom: 15px; min-height: 25px; font-size: 1.1em; padding: 10px; border-radius: 5px; transition: background-color 0.3s ease; word-wrap: break-word; }
+         #result-message.good-result { background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb;} #result-message.bad-result { background-color: #f8d7da; color: #721c24; border: 1px solid #f5c6cb;} #result-message.neutral-result { background-color: #fff3cd; color: #856404; border: 1px solid #ffeeba;} #result-message.skip-result { background-color: #e2e3e5; color: #383d41; border: 1px solid #d6d8db;} #result-message.fatigue-result { background-color: #ffeeba; color: #856404; border: 1px solid #ffd761; }
+         .results p { margin: 8px 0; font-size: 1.05em; } .results span[id] { font-weight: 700; padding: 2px 5px; border-radius: 4px; background-color: rgba(0,0,0,0.05); }
+         #cost-spent-creative { color: var(--cost-color); } #cost-spent-campaign { color: var(--primary-color); } #installs-gained { color: var(--secondary-color); } #cpi { font-weight: bold; }
+         .game-over-placeholder { margin-top: 30px; text-align: center; display: none; }
+         .game-over-placeholder.visible { display: block; }
+         .game-over-placeholder button { background-color: #ecf0f1; color: var(--primary-color); width: auto; padding: 12px 25px; font-weight: 700; border: none; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease; }
+         .game-over-placeholder button:hover { background-color: #dadedf; }
+
+        /* Стили для модального окна статистики */
+         #stats-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.6); z-index: 1000; opacity: 0; transition: opacity 0.3s ease-out; pointer-events: none; }
+         #stats-modal { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -60%) scale(0.95); background: white; padding: 25px 30px; border-radius: 12px; box-shadow: 0 5px 25px rgba(0,0,0,0.2); z-index: 1001; opacity: 0; transition: opacity 0.3s ease-out, transform 0.3s ease-out; pointer-events: none; max-width: 550px; width: 90%; color: var(--text-dark); }
+         #stats-overlay.visible, #stats-modal.visible { opacity: 1; pointer-events: auto; }
+         #stats-modal.visible { transform: translate(-50%, -50%) scale(1); }
+         #stats-modal h2 { color: var(--secondary-color); margin-top: 0; margin-bottom: 20px; text-align: center; border-bottom: 1px solid var(--border-color); padding-bottom: 10px; }
+         #stats-modal ul { list-style: none; padding: 0; margin: 0 0 25px 0; }
+         #stats-modal li { margin-bottom: 10px; font-size: 1.05em; display: flex; justify-content: space-between; border-bottom: 1px dashed var(--border-color); padding-bottom: 5px; }
+         #stats-modal li span:first-child { color: var(--text-light); } #stats-modal li span:last-child { font-weight: 700; color: var(--text-dark); }
+         #stats-modal .final-reason { text-align: center; font-style: italic; margin-bottom: 20px; color: var(--primary-color); font-weight: bold; }
+         #close-stats-button { display: block; margin: 0 auto; padding: 10px 25px; background-color: var(--secondary-color); color: white; border: none; border-radius: 6px; font-size: 1em; font-weight: 700; cursor: pointer; transition: background-color 0.2s ease; }
+         #close-stats-button:hover { background-color: #2980b9; }
+
+    </style>
+</head>
+<body>
+
+    <div class="stats-sticky-wrapper">
+        <div class="stats">
+            <div>💰 Бюджет <span id="budget" data-original-color="#e74c3c">10000</span> $</div>
+            <div>👥 Аудитория <span id="audience-size" data-original-color="#3498db">0</span></div>
+            <div>💸 Доход/д <span id="daily-income" data-original-color="#2ecc71">0</span> $</div>
+            <div>📈 Доход/н <span id="weekly-income" data-original-color="#2ecc71">0</span> $</div>
+            <div>📅 Неделя <span id="week">1</span></div>
+        </div>
+    </div>
+
+    <div class="container">
+        <h1>💰 Треш-Креативщик V5.1: Усталость и Недели! 💰</h1>
+        <p>Создавай рекламу, получай установки, зарабатывай на игроках! Ход = неделя. Креативы "выгорают", цены растут, игроки уходят, доход падает... Цель: выжить!</p>
+
+        <div class="ad-creator">
+             <h2>🛠️ Собираем креатив:</h2>
+             <!-- Карточки -->
+             <div class="option-group"><h3>1. Выбери стиль:</h3><div class="card-container" id="style-cards"><div class="card" data-category="style" data-value="2d" data-icon="🎨"><span class="card-icon">🎨</span><span class="card-title">2D Арт</span><span class="card-desc">Дешево</span></div><div class="card" data-category="style" data-value="iso" data-icon="🏛️"><span class="card-icon">🏛️</span><span class="card-title">Изометрия</span><span class="card-desc">Умеренно</span></div><div class="card" data-category="style" data-value="3d" data-icon="✨"><span class="card-icon">✨</span><span class="card-title">Полное 3D</span><span class="card-desc">Дорого</span></div></div></div>
+             <div class="option-group"><h3>2. Геймплей:</h3><div class="card-container" id="gameplay-cards"><div class="card" data-category="gameplay" data-value="real" data-icon="🚜" data-cost-factor="1.0"><span class="card-icon">🚜</span><span class="card-title">Реальный</span><span class="card-desc">Скучно</span></div><div class="card" data-category="gameplay" data-value="exaggerated" data-icon="✨" data-cost-factor="1.2"><span class="card-icon">✨</span><span class="card-title">Приукраш.</span><span class="card-desc">Веселее</span></div><div class="card" data-category="gameplay" data-value="fake_puzzle" data-icon="🧩" data-cost-factor="1.8"><span class="card-icon">🧩</span><span class="card-title">Фейк-пазл</span><span class="card-desc">Мислид</span></div><div class="card" data-category="gameplay" data-value="fake_shooter" data-icon="🔫" data-cost-factor="2.2"><span class="card-icon">🔫</span><span class="card-title">Фейк-шутер</span><span class="card-desc">Дорого!</span></div><div class="card" data-category="gameplay" data-value="non_existent" data-icon="💎" data-cost-factor="2.0"><span class="card-icon">💎</span><span class="card-title">Несущ.фича</span><span class="card-desc">Обещания</span></div></div></div>
+             <div class="option-group"><h3>3. Герой:</h3><div class="card-container" id="character-cards"><div class="card" data-category="character" data-value="hero" data-icon="👨‍🌾" data-cost-factor="1.0"><span class="card-icon">👨‍🌾</span><span class="card-title">Фермер</span><span class="card-desc">Стандарт</span></div><div class="card" data-category="character" data-value="sexy" data-icon="💃" data-cost-factor="1.9"><span class="card-icon">💃</span><span class="card-title">Эльфийка</span><span class="card-desc">Кликбейт</span></div><div class="card" data-category="character" data-value="monster" data-icon="👹" data-cost-factor="1.6"><span class="card-icon">👹</span><span class="card-title">Монстр</span><span class="card-desc">Моделька</span></div><div class="card" data-category="character" data-value="noob_vs_pro" data-icon="😎" data-cost-factor="1.4"><span class="card-icon">😎</span><span class="card-title">Нуб vs Про</span><span class="card-desc">Монтаж</span></div><div class="card" data-category="character" data-value="crying_character" data-icon="😭" data-cost-factor="1.1"><span class="card-icon">😭</span><span class="card-title">Плакса</span><span class="card-desc">Драма</span></div></div></div>
+             <div class="option-group"><h3>4. Призыв:</h3><div class="card-container" id="cta-cards"><div class="card" data-category="cta" data-value="standard" data-icon="👇" data-cost-factor="1.0"><span class="card-icon">👇</span><span class="card-title">"Скачать!"</span><span class="card-desc">Просто</span></div><div class="card" data-category="cta" data-value="urgent" data-icon="⏰" data-cost-factor="1.1"><span class="card-icon">⏰</span><span class="card-title">"СРОЧНО!"</span><span class="card-desc">Таймер</span></div><div class="card" data-category="cta" data-value="fail" data-icon="🤯" data-cost-factor="1.3"><span class="card-icon">🤯</span><span class="card-title">"99% нет!"</span><span class="card-desc">Кликбейт</span></div><div class="card" data-category="cta" data-value="reward" data-icon="🎁" data-cost-factor="1.2"><span class="card-icon">🎁</span><span class="card-title">"100к зол!"</span><span class="card-desc">Золото</span></div><div class="card" data-category="cta" data-value="adult" data-icon="🔞" data-cost-factor="1.5"><span class="card-icon">🔞</span><span class="card-title">"18+"</span><span class="card-desc">Риск</span></div></div></div>
+             <!-- Превью и Стоимость -->
+             <div class="ad-preview"><h4>Превью креатива:</h4><div class="preview-icons" id="preview-icons">❓ + ❓ + ❓ + ❓</div></div>
+             <div class="cost-summary"><div class="cost-item"><label>💸 Стоимость Производства:</label><span id="creative-cost-display">---</span> $</div><div class="cost-item"><label>📢 Бюджет Продвижения:</label><input type="number" id="campaign-cost" value="1000" min="500" step="500"> $</div></div>
+             <!-- Кнопки действий -->
+              <div class="action-buttons"><button id="launch-button" disabled>Собери креатив!</button><button id="skip-week-button">😴 Пропустить неделю</button></div>
+        </div>
+
+        <div class="results">
+            <h2>📊 Результаты Недели <span id="results-week"></span>:</h2>
+            <p id="result-message">Здесь будет сообщение о результате.</p>
+              <p>🔧 Потрачено на креатив: <span id="cost-spent-creative">0</span> $</p>
+              <p>📢 Потрачено на продвижение: <span id="cost-spent-campaign">0</span> $</p>
+            <p>📈 Получено установок: <span id="installs-gained">0</span></p>
+            <p>📉 Усталость креатива: <span id="fatigue-penalty-display">-</span></p>
+            <p>🎯 Эффективность (CPI): <span id="cpi">N/A</span> $</p>
+             <p>💰 Получено дохода: <span id="income-received">0</span> $</p>
+        </div>
+
+         <!-- Placeholder для кнопки перезапуска -->
+         <div class="game-over-placeholder">
+             <button onclick="location.reload()">Начать заново!</button>
+         </div>
+    </div>
+
+    <!-- Модальное окно статистики -->
+    <div id="stats-overlay"></div>
+    <div id="stats-modal">
+        <h2>😭 Конец Игры! 😭</h2>
+        <p class="final-reason" id="modal-reason">Причина не указана</p>
+        <ul>
+            <li><span>📅 Пройдено недель:</span> <span id="modal-final-week">0</span></li>
+            <li><span>👥 Финальная аудитория:</span> <span id="modal-final-audience">0</span></li>
+            <li><span>📈 Пиковая аудитория:</span> <span id="modal-peak-audience">0</span></li>
+            <li><span>🚀 Запущено кампаний:</span> <span id="modal-campaigns-launched">0</span></li>
+            <li><span>😴 Пропущено недель:</span> <span id="modal-weeks-skipped">0</span></li>
+            <li><span>💰 Всего заработано:</span> <span id="modal-total-income">0</span> $</li>
+            <li><span>🔧 Потрачено на креативы:</span> <span id="modal-total-creative-cost">0</span> $</li>
+            <li><span>📢 Потрачено на продвижение:</span> <span id="modal-total-campaign-cost">0</span> $</li>
+            <li><span>🎯 Средний CPI:</span> <span id="modal-average-cpi">N/A</span> $</li>
+        </ul>
+        <button id="close-stats-button">Закрыть</button>
+    </div>
+
+    <script>
+        // --- Game State ---
+        let budget = 10000; let totalInstalls = 0; let day = 1;
+        let dailyIncome = 0; let weeklyIncome = 0;
+        const incomePerInstall = 0.45; const dailyChurnRate = 0.035;
+        const minBudgetForCampaign = 500; const baseCreativeCost = 500; const maxCreativeCost = 15000;
+        let creativeCostInflationFactor = 1.0; const dailyInflationRate = 0.003;
+        let incomeDecayFactor = 1.0; const dailyDecayRate = 0.002; const minIncomeFactor = 0.25;
+        let consecutiveSameCreativeCount = 0; const fatiguePenaltyPerRepeat = 0.15; const minFatigueMultiplier = 0.3;
+        let selectedStyle = null; let selectedGameplay = null; let selectedCharacter = null; let selectedCTA = null;
+        let currentCreativeCost = 0;
+        let lastLaunchedStyle = null; let lastLaunchedGameplay = null; let lastLaunchedCharacter = null; let lastLaunchedCTA = null;
+        let currentIncomeMultiplier = 1.0;
+
+        // Statistics
+        let totalCreativeSpent = 0; let totalCampaignSpent = 0; let totalIncomeEarned = 0;
+        let campaignsLaunched = 0; let weeksSkipped = 0; let peakAudience = 0;
+        let finalLossReason = "";
+        let gameIsOver = false; // Флаг для предотвращения повторного вызова endGame
+
+        // --- DOM Elements ---
+        const budgetDisplay = document.getElementById('budget'); const audienceDisplay = document.getElementById('audience-size'); const dailyIncomeDisplay = document.getElementById('daily-income'); const weeklyIncomeDisplay = document.getElementById('weekly-income'); const weekDisplay = document.getElementById('week'); const campaignCostInput = document.getElementById('campaign-cost'); const creativeCostDisplay = document.getElementById('creative-cost-display'); const launchButton = document.getElementById('launch-button'); const resultsDiv = document.querySelector('.results'); const resultsWeekDisplay = document.getElementById('results-week'); const resultMessageDisplay = document.getElementById('result-message'); const costSpentCreativeDisplay = document.getElementById('cost-spent-creative'); const costSpentCampaignDisplay = document.getElementById('cost-spent-campaign'); const installsGainedDisplay = document.getElementById('installs-gained'); const fatiguePenaltyEl = document.getElementById('fatigue-penalty-display'); const cpiDisplay = document.getElementById('cpi'); const incomeReceivedDisplay = document.getElementById('income-received'); const gameOverPlaceholder = document.querySelector('.game-over-placeholder'); const previewIconsDiv = document.getElementById('preview-icons'); const allCards = document.querySelectorAll('.card'); const skipWeekButton = document.getElementById('skip-week-button');
+        // Modal Elements
+        const statsOverlay = document.getElementById('stats-overlay'); const statsModal = document.getElementById('stats-modal'); const closeModalButton = document.getElementById('close-stats-button'); const modalReasonEl = document.getElementById('modal-reason'); const modalFinalWeekEl = document.getElementById('modal-final-week'); const modalFinalAudienceEl = document.getElementById('modal-final-audience'); const modalPeakAudienceEl = document.getElementById('modal-peak-audience'); const modalCampaignsLaunchedEl = document.getElementById('modal-campaigns-launched'); const modalWeeksSkippedEl = document.getElementById('modal-weeks-skipped'); const modalTotalIncomeEl = document.getElementById('modal-total-income'); const modalTotalCreativeCostEl = document.getElementById('modal-total-creative-cost'); const modalTotalCampaignCostEl = document.getElementById('modal-total-campaign-cost'); const modalAverageCpiEl = document.getElementById('modal-average-cpi');
+
+        let prevBudgetValue = budget; let prevAudienceValue = totalInstalls; let prevDailyIncomeValue = dailyIncome; let prevWeeklyIncomeValue = weeklyIncome;
+
+        // --- Game Logic ---
+
+        function flashStatUpdate(spanElement, changeType) {
+            if (!spanElement) return; let flashColor = ''; const originalColor = spanElement.dataset.originalColor || 'inherit'; switch (changeType) { case 'positive': flashColor = 'var(--income-color)'; break; case 'negative': flashColor = 'var(--primary-color)'; break; case 'neutral': flashColor = 'var(--secondary-color)'; break; default: return; } spanElement.style.color = flashColor; spanElement.style.transform = 'scale(1.15)'; spanElement.style.transition = 'color 0.1s ease-out, transform 0.1s ease-out'; setTimeout(() => { spanElement.style.color = originalColor; spanElement.style.transform = 'scale(1)'; setTimeout(() => { spanElement.style.transition = ''; }, 150); }, 150);
+        }
+
+        function calculateIncomeMultiplier(style, gameplay, character, cta) {
+            if (!style || !gameplay || !character || !cta) return 1.0; let t=0, m=0, h=0; switch(gameplay){case 'real':t+=0;m+=0;h+=1;break;case 'exaggerated':t+=2;m+=1;h+=3;break;case 'fake_puzzle':t+=5;m+=8;h+=6;break;case 'fake_shooter':t+=7;m+=10;h+=4;break;case 'non_existent':t+=4;m+=9;h+=7;break;} switch(character){case 'hero':t+=0;m+=0;h+=1;break;case 'sexy':t+=6;m+=4;h+=5;break;case 'monster':t+=4;m+=6;h+=3;break;case 'noob_vs_pro':t+=5;m+=2;h+=6;break;case 'crying_character':t+=7;m+=1;h+=4;break;} switch(cta){case 'standard':t+=0;m+=0;h+=1;break;case 'urgent':t+=3;m+=1;h+=4;break;case 'fail':t+=6;m+=3;h+=7;break;case 'reward':t+=4;m+=8;h+=5;break;case 'adult':t+=8;m+=5;h+=6;break;} let multi = 1.0 + (h / 50) - (m / 80); return Math.max(0.7, Math.min(1.5, multi));
+        }
+
+        function calculateDailyIncome() {
+            const effectiveIncomePerInstall = Math.max(incomePerInstall * minIncomeFactor, incomePerInstall * incomeDecayFactor); dailyIncome = Math.round(totalInstalls * effectiveIncomePerInstall * currentIncomeMultiplier * 100) / 100; dailyIncome = parseFloat(dailyIncome.toFixed(2)); weeklyIncome = parseFloat((dailyIncome * 7).toFixed(2));
+        }
+
+        function calculateCreativeCost() {
+            if (!selectedStyle || !selectedGameplay || !selectedCharacter || !selectedCTA) return 0; let currentBaseCost = baseCreativeCost * creativeCostInflationFactor; let cost = currentBaseCost; switch (selectedStyle) { case '2d': cost *= 1.0; break; case 'iso': cost *= 1.8; break; case '3d': cost *= 3.0; break; } const gpCard = document.querySelector(`.card[data-category='gameplay'][data-value='${selectedGameplay}']`); const chCard = document.querySelector(`.card[data-category='character'][data-value='${selectedCharacter}']`); const ctaCard = document.querySelector(`.card[data-category='cta'][data-value='${selectedCTA}']`); cost *= parseFloat(gpCard?.dataset.costFactor || 1.0); cost *= parseFloat(chCard?.dataset.costFactor || 1.0); cost *= parseFloat(ctaCard?.dataset.costFactor || 1.0); cost *= (Math.random() * 0.2 + 0.9); cost = Math.max(currentBaseCost, Math.min(maxCreativeCost * creativeCostInflationFactor, Math.round(cost))); return Math.round(cost);
+        }
+
+        function getMinimumCreativeCost() {
+            let minCost = baseCreativeCost * creativeCostInflationFactor; return Math.round(minCost);
+        }
+
+        function updateDisplay() {
+            if (gameIsOver) return; // Не обновляем интерфейс, если игра уже закончилась
+
+            // Game Over Checks First
+            if (budget < 0) { endGame("Вы обанкротились!"); return; }
+            const minimumPossibleCreativeCost = getMinimumCreativeCost();
+            if (budget < minimumPossibleCreativeCost) { endGame("Не хватает средств даже на самый дешевый креатив!"); return; }
+
+            calculateDailyIncome(); // Recalculates daily and weekly
+
+            // Update stats display and peak audience
+             const newBudgetValue = Math.round(budget); const newAudienceValue = totalInstalls; const newDailyIncomeValue = dailyIncome; const newWeeklyIncomeValue = weeklyIncome; const currentWeek = Math.ceil(day / 7);
+             if (newBudgetValue !== prevBudgetValue) { budgetDisplay.textContent = newBudgetValue; flashStatUpdate(budgetDisplay, newBudgetValue > prevBudgetValue ? 'positive' : 'negative'); prevBudgetValue = newBudgetValue; }
+             if (newAudienceValue !== prevAudienceValue) { audienceDisplay.textContent = newAudienceValue; flashStatUpdate(audienceDisplay, newAudienceValue > prevAudienceValue ? 'positive' : 'negative'); prevAudienceValue = newAudienceValue; peakAudience = Math.max(peakAudience, newAudienceValue); }
+             dailyIncomeDisplay.textContent = newDailyIncomeValue.toFixed(2); if (newDailyIncomeValue !== prevDailyIncomeValue) { flashStatUpdate(dailyIncomeDisplay, 'neutral'); prevDailyIncomeValue = newDailyIncomeValue; }
+             weeklyIncomeDisplay.textContent = newWeeklyIncomeValue.toFixed(2); if (newWeeklyIncomeValue !== prevWeeklyIncomeValue) { flashStatUpdate(weeklyIncomeDisplay, 'neutral'); prevWeeklyIncomeValue = newWeeklyIncomeValue; }
+             weekDisplay.textContent = currentWeek;
+
+            currentCreativeCost = calculateCreativeCost();
+            creativeCostDisplay.textContent = currentCreativeCost > 0 ? currentCreativeCost : "---";
+
+            // Campaign Cost Input Validation
+             const currentMinBudget = parseInt(campaignCostInput.min); const currentStep = parseInt(campaignCostInput.step); let campaignCost = parseInt(campaignCostInput.value) || currentMinBudget; if (isNaN(campaignCost) || campaignCost < currentMinBudget) campaignCost = currentMinBudget; campaignCost = Math.round(campaignCost / currentStep) * currentStep; campaignCost = Math.max(currentMinBudget, campaignCost);
+            const totalCost = currentCreativeCost + campaignCost; const canAfford = budget >= totalCost; const allSelected = selectedStyle && selectedGameplay && selectedCharacter && selectedCTA;
+
+            // Launch Button State
+            if (allSelected && canAfford) { launchButton.disabled = false; launchButton.textContent = `🚀 Запустить! (${totalCost}$)`; }
+            else { launchButton.disabled = true; if (!allSelected) { launchButton.textContent = "Собери креатив!"; } else if (!canAfford) { launchButton.textContent = `Не хватает ${totalCost - Math.round(budget)}$!`; } else { launchButton.textContent = "Ошибка"; } }
+            skipWeekButton.disabled = false;
+
+            // Campaign Cost Input Max/Value Correction
+            const maxCampaignBudget = Math.max(0, budget - currentCreativeCost); let calculatedMax = Math.floor(maxCampaignBudget / currentStep) * currentStep; campaignCostInput.max = Math.max(currentMinBudget, calculatedMax);
+             let currentInputValue = parseInt(campaignCostInput.value); if (isNaN(currentInputValue)) currentInputValue = currentMinBudget; if (currentInputValue > campaignCostInput.max) { campaignCostInput.value = campaignCostInput.max; } else if (currentInputValue < currentMinBudget) { campaignCostInput.value = currentMinBudget; } else { let roundedValue = Math.round(currentInputValue / currentStep) * currentStep; roundedValue = Math.max(currentMinBudget, roundedValue); if (roundedValue > campaignCostInput.max) roundedValue = campaignCostInput.max; if (campaignCostInput.value != roundedValue) campaignCostInput.value = roundedValue; }
+
+            updatePreview();
+        }
+
+        function updatePreview() {
+             if (gameIsOver) return; // Prevent updates after game over
+             const iS = document.querySelector('#style-cards .card.selected')?.dataset.icon||'❓'; const iG = document.querySelector('#gameplay-cards .card.selected')?.dataset.icon||'❓'; const iC = document.querySelector('#character-cards .card.selected')?.dataset.icon||'❓'; const iT = document.querySelector('#cta-cards .card.selected')?.dataset.icon||'❓'; previewIconsDiv.textContent = `${iS} + ${iG} + ${iC} + ${iT}`;
+        }
+
+        function calculateAdEffectiveness(gameplay, character, cta) {
+            let t=0,m=0,h=0; switch(gameplay){case 'real':t+=0;m+=0;h+=1;break;case 'exaggerated':t+=2;m+=1;h+=3;break;case 'fake_puzzle':t+=5;m+=8;h+=6;break;case 'fake_shooter':t+=7;m+=10;h+=4;break;case 'non_existent':t+=4;m+=9;h+=7;break;} switch(character){case 'hero':t+=0;m+=0;h+=1;break;case 'sexy':t+=6;m+=4;h+=5;break;case 'monster':t+=4;m+=6;h+=3;break;case 'noob_vs_pro':t+=5;m+=2;h+=6;break;case 'crying_character':t+=7;m+=1;h+=4;break;} switch(cta){case 'standard':t+=0;m+=0;h+=1;break;case 'urgent':t+=3;m+=1;h+=4;break;case 'fail':t+=6;m+=3;h+=7;break;case 'reward':t+=4;m+=8;h+=5;break;case 'adult':t+=8;m+=5;h+=6;break;} const baseEff = (h*1.5 + t*0.8 + m*1.2) * (Math.random()*0.4+0.8); const potentialInstalls = Math.max(1, Math.floor(baseEff)); return { potentialInstallsPer100DollarsCampaign: potentialInstalls, trashiness: t, misleadingness: m, hype: h };
+        }
+
+        function clearSelections() {
+             selectedStyle = null; selectedGameplay = null; selectedCharacter = null; selectedCTA = null;
+             allCards.forEach(card => { card.classList.remove('selected'); card.style.transform = ''; });
+             updatePreview(); creativeCostDisplay.textContent = "---";
+        }
+
+        function advanceEconomy() {
+            let totalChurnThisWeek = 0; let totalIncomeThisWeek = 0;
+             for (let i = 0; i < 7; i++) {
+                 const churnToday = Math.floor(totalInstalls * dailyChurnRate); totalInstalls -= churnToday; totalInstalls = Math.max(0, totalInstalls); totalChurnThisWeek += churnToday;
+                 const effectiveIncomePerInstall = Math.max(incomePerInstall * minIncomeFactor, incomePerInstall * incomeDecayFactor); const incomeToday = parseFloat((totalInstalls * effectiveIncomePerInstall * currentIncomeMultiplier).toFixed(2)); totalIncomeThisWeek += incomeToday;
+                 creativeCostInflationFactor += dailyInflationRate; incomeDecayFactor = Math.max(minIncomeFactor, incomeDecayFactor - dailyDecayRate); day++;
+             }
+             return { incomeEarnedThisWeek: parseFloat(totalIncomeThisWeek.toFixed(2)), churnedThisWeek: totalChurnThisWeek };
+        }
+
+        // --- CORE TURN LOGIC: LAUNCH CAMPAIGN ---
+        function launchCampaign() {
+            if (gameIsOver || launchButton.disabled) return;
+            resultsDiv.classList.remove('visible');
+
+            const campaignCost = parseInt(campaignCostInput.value);
+            const creativeCost = currentCreativeCost;
+            const totalCost = creativeCost + campaignCost;
+
+            // Check funds again (should be covered by updateDisplay check, but safe)
+            if (budget < totalCost) { setResultMessage("Недостаточно средств!", "bad-result"); resultsDiv.classList.add('visible'); updateDisplay(); return; }
+
+            // Creative Fatigue
+             let fatiguePenalty = 1.0; const isSameCreative = selectedStyle === lastLaunchedStyle && selectedGameplay === lastLaunchedGameplay && selectedCharacter === lastLaunchedCharacter && selectedCTA === lastLaunchedCTA;
+             if (isSameCreative && selectedStyle) { consecutiveSameCreativeCount++; fatiguePenalty = Math.max(minFatigueMultiplier, 1.0 - consecutiveSameCreativeCount * fatiguePenaltyPerRepeat); } else { consecutiveSameCreativeCount = 0; }
+
+             // Advance week economy & get results
+             const weekResults = advanceEconomy(); const incomeEarned = weekResults.incomeEarnedThisWeek; const churnedInstalls = weekResults.churnedThisWeek;
+             budget += incomeEarned; totalIncomeEarned += incomeEarned;
+
+             // Spend
+             budget -= totalCost; totalCreativeSpent += creativeCost; totalCampaignSpent += campaignCost;
+
+            // Calculate New Installs (with fatigue)
+            const { potentialInstallsPer100DollarsCampaign, trashiness, misleadingness, hype } = calculateAdEffectiveness(selectedGameplay, selectedCharacter, selectedCTA);
+            let installsGained = Math.floor((campaignCost / 100) * potentialInstallsPer100DollarsCampaign * (Math.random() * 0.5 + 0.75));
+            installsGained = Math.max(0, Math.floor(installsGained * fatiguePenalty));
+
+            // Update Last Launched & Multiplier
+             lastLaunchedStyle = selectedStyle; lastLaunchedGameplay = selectedGameplay; lastLaunchedCharacter = selectedCharacter; lastLaunchedCTA = selectedCTA;
+             currentIncomeMultiplier = calculateIncomeMultiplier(lastLaunchedStyle, lastLaunchedGameplay, lastLaunchedCharacter, lastLaunchedCTA);
+
+            // Events & Messaging
+            let resultMessage = ""; let resultClass = "neutral-result"; let messageIcon = "📊"; let penalty = 0;
+             if (trashiness + misleadingness > 25 && Math.random() < 0.18) { const boost = (Math.random() * 1.5 + 1.5); installsGained = Math.floor(installsGained * boost); messageIcon = "🥳"; resultMessage = `ВИРУС ${boost.toFixed(1)}x! 🔥 `; resultClass = "good-result"; }
+             else if (trashiness + misleadingness > 18) { messageIcon = "👍"; resultMessage = "Хороший трешак! "; resultClass = "good-result"; }
+             else if (trashiness + misleadingness < 6) { messageIcon = "😴"; resultMessage = "Скучновато вышло... "; installsGained = Math.floor(installsGained * 0.6); resultClass = "bad-result"; }
+             else { messageIcon = "📈"; resultMessage = "Кампания как кампания. "; }
+             if (fatiguePenalty < 1.0) { messageIcon = "😩"; resultMessage += ` Креатив выгорел! (-${Math.round((1 - fatiguePenalty) * 100)}% уст.) `; resultClass = resultClass === "bad-result" ? "bad-result" : "fatigue-result"; }
+             if (misleadingness > 14 && Math.random() < 0.15) { penalty = Math.round(Math.min(Math.max(500, budget * 0.25), 4000)); messageIcon = "😱"; resultMessage += ` ШТРАФ ${penalty}$! 💸`; installsGained = Math.floor(installsGained * 0.4); resultClass = "bad-result"; }
+             budget -= penalty; resultMessage += ` (+${incomeEarned.toFixed(2)}$ дох./нед., ${churnedInstalls} ушло/нед.)`;
+
+             // Add New Installs & Update Stats
+            totalInstalls += installsGained;
+            campaignsLaunched++;
+
+            // Update Results Display
+            const currentWeek = Math.ceil((day - 1) / 7);
+            resultsWeekDisplay.textContent = currentWeek;
+            setResultMessage(messageIcon + " " + resultMessage, resultClass);
+            costSpentCreativeDisplay.textContent = creativeCost; costSpentCampaignDisplay.textContent = campaignCost; installsGainedDisplay.textContent = installsGained;
+             if(fatiguePenaltyEl) fatiguePenaltyEl.textContent = `${Math.round((1-fatiguePenalty)*100)}%`;
+            const cpi = installsGained > 0 ? (totalCost / installsGained).toFixed(2) : "---"; cpiDisplay.textContent = `${cpi} $`; incomeReceivedDisplay.textContent = incomeEarned.toFixed(2);
+            resultsDiv.classList.add('visible');
+
+            // Final Check & Update UI for next turn
+             updateDisplay(); // Call updateDisplay AFTER results are shown and BEFORE next turn's checks
+        }
+
+        // --- CORE TURN LOGIC: SKIP WEEK ---
+        function skipWeek() {
+            if (gameIsOver || skipWeekButton.disabled) return;
+            resultsDiv.classList.remove('visible');
+
+             consecutiveSameCreativeCount = 0; // Reset fatigue
+
+             // Advance week economy & get results
+             const weekResults = advanceEconomy(); const incomeEarned = weekResults.incomeEarnedThisWeek; const churnedInstalls = weekResults.churnedThisWeek;
+             budget += incomeEarned; totalIncomeEarned += incomeEarned; weeksSkipped++;
+
+            // Update Results Display
+             const endedWeek = Math.ceil((day - 1) / 7);
+             resultsWeekDisplay.textContent = endedWeek;
+             setResultMessage(`😴 Неделя ${endedWeek} пропущена. Доход ${incomeEarned.toFixed(2)}$. Ушло: ${churnedInstalls}`, "skip-result");
+             costSpentCreativeDisplay.textContent = "0"; costSpentCampaignDisplay.textContent = "0"; installsGainedDisplay.textContent = "0";
+             if(fatiguePenaltyEl) fatiguePenaltyEl.textContent = '0%'; cpiDisplay.textContent = "---"; incomeReceivedDisplay.textContent = incomeEarned.toFixed(2);
+             resultsDiv.classList.add('visible');
+
+            // Check Game Over & Update UI for next turn
+             updateDisplay(); // Call updateDisplay AFTER results and BEFORE next turn's checks
+        }
+
+        function setResultMessage(message, className = "") {
+            if(resultMessageDisplay) resultMessageDisplay.textContent = message;
+            if(resultMessageDisplay) resultMessageDisplay.className = 'result-message'; // Base class first
+            if (className && resultMessageDisplay) { resultMessageDisplay.classList.add(className); }
+         }
+
+        function endGame(reason) {
+            if (gameIsOver) return; // Prevent multiple calls
+            gameIsOver = true; // Set the flag
+            finalLossReason = reason;
+
+            launchButton.disabled = true; launchButton.textContent = "Игра окончена";
+            skipWeekButton.disabled = true;
+            if (document.querySelector('.ad-creator')) { document.querySelector('.ad-creator').style.display = 'none'; }
+            resultsDiv.classList.remove('visible');
+            clearSelections();
+
+            // Final calculation & Stats population
+            const finalWeek = Math.ceil(day / 7);
+             peakAudience = Math.max(peakAudience, totalInstalls);
+             const totalSpent = totalCreativeSpent + totalCampaignSpent;
+             const approxTotalGenerated = peakAudience > 0 ? peakAudience : 1; // Avoid division by zero
+             const averageCpi = totalSpent > 0 ? (totalSpent / approxTotalGenerated) : 0;
+
+            // Safely update modal elements
+             if (modalReasonEl) modalReasonEl.textContent = finalLossReason;
+             if (modalFinalWeekEl) modalFinalWeekEl.textContent = finalWeek;
+             if (modalFinalAudienceEl) modalFinalAudienceEl.textContent = totalInstalls;
+             if (modalPeakAudienceEl) modalPeakAudienceEl.textContent = peakAudience;
+             if (modalCampaignsLaunchedEl) modalCampaignsLaunchedEl.textContent = campaignsLaunched;
+             if (modalWeeksSkippedEl) modalWeeksSkippedEl.textContent = weeksSkipped;
+             if (modalTotalIncomeEl) modalTotalIncomeEl.textContent = Math.round(totalIncomeEarned);
+             if (modalTotalCreativeCostEl) modalTotalCreativeCostEl.textContent = Math.round(totalCreativeSpent);
+             if (modalTotalCampaignCostEl) modalTotalCampaignCostEl.textContent = Math.round(totalCampaignSpent);
+             if (modalAverageCpiEl) modalAverageCpiEl.textContent = averageCpi > 0 ? averageCpi.toFixed(2) : "N/A";
+
+            // Show modal and overlay
+             if (statsOverlay) statsOverlay.classList.add('visible');
+             if (statsModal) statsModal.classList.add('visible');
+
+            // Show restart button placeholder
+             if (gameOverPlaceholder) gameOverPlaceholder.classList.add('visible');
+        }
+
+        // --- Event Listeners ---
+        allCards.forEach(card => { card.addEventListener('click', () => { if (gameIsOver) return; const container = card.closest('.card-container'); if (!container) return; const value = card.dataset.value; const category = card.dataset.category; container.querySelectorAll('.card').forEach(sibling => { sibling.classList.remove('selected'); sibling.style.transform = ''; }); card.classList.add('selected'); if (category === 'style') selectedStyle = value; else if (category === 'gameplay') selectedGameplay = value; else if (category === 'character') selectedCharacter = value; else if (category === 'cta') selectedCTA = value; updateDisplay(); }); });
+        launchButton.addEventListener('click', launchCampaign);
+        skipWeekButton.addEventListener('click', skipWeek);
+        campaignCostInput.addEventListener('input', () => { if (gameIsOver) return; updateDisplay(); });
+        campaignCostInput.addEventListener('blur', () => { if (gameIsOver) return; updateDisplay(); });
+
+        // Modal Close Listeners
+        if (closeModalButton) { closeModalButton.addEventListener('click', () => { if (statsOverlay) statsOverlay.classList.remove('visible'); if (statsModal) statsModal.classList.remove('visible'); }); }
+        if (statsOverlay) { statsOverlay.addEventListener('click', () => { if (statsOverlay) statsOverlay.classList.remove('visible'); if (statsModal) statsModal.classList.remove('visible'); }); }
+
+        // --- Initial Setup ---
+        document.querySelectorAll('.stats span[id]').forEach(span => { if(span) span.dataset.originalColor = window.getComputedStyle(span).color; });
+        updateDisplay();
+        updatePreview();
+
+    </script>
+</body>
+</html>
