@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Симулятор Креативного Продюсера</title> <!-- V5.1 -->
+    <title>Симулятор Креативного Продюсера</title> <!-- Изменено -->
     <style>
-        /* CSS без изменений */
+        /* CSS без изменений от прошлой версии */
         @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;700&display=swap');
         :root { /* ...переменные... */
              --primary-color: #e74c3c; --secondary-color: #3498db; --income-color: #2ecc71; --cost-color: #f39c12; --background-light: #f4f6f9; --background-white: #ffffff; --text-dark: #2c3e50; --text-light: #555; --border-color: #dfe4ea; --card-shadow: 0 4px 6px rgba(0, 0, 0, 0.08); --card-hover-shadow: 0 6px 12px rgba(0, 0, 0, 0.12); --selected-border: 3px solid var(--secondary-color);
@@ -31,7 +31,7 @@
          #creative-cost-display { color: var(--cost-color); } #campaign-cost { padding: 8px; border: 1px solid var(--border-color); border-radius: 4px; box-sizing: border-box; width: 110px; text-align: right; }
          .ad-preview { margin-top: 15px; text-align: center; margin-bottom: 15px; } .ad-preview h4 { margin: 0 0 5px 0; color: var(--text-light); font-size: 0.9em; font-weight: normal;} .preview-icons { font-size: 1.8em; word-spacing: 10px; min-height: 35px; line-height: 1; }
          .action-buttons { display: flex; gap: 15px; margin-top: 25px; }
-         #launch-button, #skip-week-button { flex-grow: 1; padding: 15px 20px; border: none; border-radius: 8px; font-size: 1.1em; font-weight: 700; cursor: pointer; transition: all 0.3s ease; text-align: center; } /* Correct ID used */
+         #launch-button, #skip-week-button { flex-grow: 1; padding: 15px 20px; border: none; border-radius: 8px; font-size: 1.1em; font-weight: 700; cursor: pointer; transition: all 0.3s ease; text-align: center; }
          #launch-button { background: linear-gradient(45deg, var(--primary-color), #f56555); color: white; box-shadow: 0 4px 10px rgba(231, 76, 60, 0.3); }
          #launch-button:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 6px 15px rgba(231, 76, 60, 0.4); } #launch-button:active:not(:disabled) { transform: translateY(0px); box-shadow: 0 2px 5px rgba(231, 76, 60, 0.2); } #launch-button:disabled { background: #bdc3c7; cursor: not-allowed; box-shadow: none; color: #7f8c8d; }
          #skip-week-button { background-color: var(--secondary-color); color: white; box-shadow: 0 4px 10px rgba(52, 152, 219, 0.3); }
@@ -76,7 +76,7 @@
     </div>
 
     <div class="container">
-        <h1>💰 Треш-Креативщик V5.1: Усталость и Недели! 💰</h1>
+        <h1>🎭 Симулятор Креативного Продюсера 🎭</h1> <!-- Изменено -->
         <p>Создавай рекламу, получай установки, зарабатывай на игроках! Ход = неделя. Креативы "выгорают", цены растут, игроки уходят, доход падает... Цель: выжить!</p>
 
         <div class="ad-creator">
@@ -129,6 +129,7 @@
         <button id="close-stats-button">Закрыть</button>
     </div>
 
+
     <script>
         // --- Game State ---
         let budget = 10000; let totalInstalls = 0; let day = 1;
@@ -150,7 +151,7 @@
         let gameIsOver = false; // Флаг для предотвращения повторного вызова endGame
 
         // --- DOM Elements ---
-        const budgetDisplay = document.getElementById('budget'); const audienceDisplay = document.getElementById('audience-size'); const dailyIncomeDisplay = document.getElementById('daily-income'); const weeklyIncomeDisplay = document.getElementById('weekly-income'); const weekDisplay = document.getElementById('week'); const campaignCostInput = document.getElementById('campaign-cost'); const creativeCostDisplay = document.getElementById('creative-cost-display'); const launchButton = document.getElementById('launch-button'); const resultsDiv = document.querySelector('.results'); const resultsWeekDisplay = document.getElementById('results-week'); const resultMessageDisplay = document.getElementById('result-message'); const costSpentCreativeDisplay = document.getElementById('cost-spent-creative'); const costSpentCampaignDisplay = document.getElementById('cost-spent-campaign'); const installsGainedDisplay = document.getElementById('installs-gained'); const fatiguePenaltyEl = document.getElementById('fatigue-penalty-display'); const cpiDisplay = document.getElementById('cpi'); const incomeReceivedDisplay = document.getElementById('income-received'); const gameOverPlaceholder = document.querySelector('.game-over-placeholder'); const previewIconsDiv = document.getElementById('preview-icons'); const allCards = document.querySelectorAll('.card'); const skipWeekButton = document.getElementById('skip-week-button');
+        const budgetDisplay = document.getElementById('budget'); const audienceDisplay = document.getElementById('audience-size'); const dailyIncomeDisplay = document.getElementById('daily-income'); const weeklyIncomeDisplay = document.getElementById('weekly-income'); const weekDisplay = document.getElementById('week'); const campaignCostInput = document.getElementById('campaign-cost'); const creativeCostDisplay = document.getElementById('creative-cost-display'); const launchButton = document.getElementById('launch-button'); const resultsDiv = document.querySelector('.results'); const resultsWeekDisplay = document.getElementById('results-week'); const resultMessageDisplay = document.getElementById('result-message'); const costSpentCreativeDisplay = document.getElementById('cost-spent-creative'); const costSpentCampaignDisplay = document.getElementById('cost-spent-campaign'); const installsGainedDisplay = document.getElementById('installs-gained'); const fatiguePenaltyEl = document.getElementById('fatigue-penalty-display'); const cpiDisplay = document.getElementById('cpi'); const incomeReceivedDisplay = document.getElementById('income-received'); const gameOverPlaceholder = document.querySelector('.game-over-placeholder'); const previewIconsDiv = document.getElementById('preview-icons'); const allCards = document.querySelectorAll('.card'); const skipWeekButton = document.getElementById('skip-week-button'); // Correct ID used
         // Modal Elements
         const statsOverlay = document.getElementById('stats-overlay'); const statsModal = document.getElementById('stats-modal'); const closeModalButton = document.getElementById('close-stats-button'); const modalReasonEl = document.getElementById('modal-reason'); const modalFinalWeekEl = document.getElementById('modal-final-week'); const modalFinalAudienceEl = document.getElementById('modal-final-audience'); const modalPeakAudienceEl = document.getElementById('modal-peak-audience'); const modalCampaignsLaunchedEl = document.getElementById('modal-campaigns-launched'); const modalWeeksSkippedEl = document.getElementById('modal-weeks-skipped'); const modalTotalIncomeEl = document.getElementById('modal-total-income'); const modalTotalCreativeCostEl = document.getElementById('modal-total-creative-cost'); const modalTotalCampaignCostEl = document.getElementById('modal-total-campaign-cost'); const modalAverageCpiEl = document.getElementById('modal-average-cpi');
 
@@ -179,27 +180,33 @@
         }
 
         function updateDisplay() {
-            if (gameIsOver) return; // Не обновляем интерфейс, если игра уже закончилась
+            if (gameIsOver) return;
 
-            // Game Over Checks First
-            if (budget < 0) { endGame("Вы обанкротились!"); return; }
-            const minimumPossibleCreativeCost = getMinimumCreativeCost();
-            if (budget < minimumPossibleCreativeCost) { endGame("Не хватает средств даже на самый дешевый креатив!"); return; }
+            // Check Game Over conditions FIRST
+            const minimumPossibleCreativeCost = getMinimumCreativeCost(); // Calculate min cost for check
+            if (budget < 0) {
+                endGame("Вы обанкротились!");
+                return; // Exit immediately after triggering game over
+            }
+            if (budget < minimumPossibleCreativeCost) {
+                endGame("Не хватает средств даже на самый дешевый креатив!");
+                return; // Exit immediately
+            }
 
-            calculateDailyIncome(); // Recalculates daily and weekly
+            // If game is not over, proceed with updating display
+            calculateDailyIncome();
 
-            // Update stats display and peak audience
-             const newBudgetValue = Math.round(budget); const newAudienceValue = totalInstalls; const newDailyIncomeValue = dailyIncome; const newWeeklyIncomeValue = weeklyIncome; const currentWeek = Math.ceil(day / 7);
-             if (newBudgetValue !== prevBudgetValue) { budgetDisplay.textContent = newBudgetValue; flashStatUpdate(budgetDisplay, newBudgetValue > prevBudgetValue ? 'positive' : 'negative'); prevBudgetValue = newBudgetValue; }
-             if (newAudienceValue !== prevAudienceValue) { audienceDisplay.textContent = newAudienceValue; flashStatUpdate(audienceDisplay, newAudienceValue > prevAudienceValue ? 'positive' : 'negative'); prevAudienceValue = newAudienceValue; peakAudience = Math.max(peakAudience, newAudienceValue); }
-             dailyIncomeDisplay.textContent = newDailyIncomeValue.toFixed(2); if (newDailyIncomeValue !== prevDailyIncomeValue) { flashStatUpdate(dailyIncomeDisplay, 'neutral'); prevDailyIncomeValue = newDailyIncomeValue; }
-             weeklyIncomeDisplay.textContent = newWeeklyIncomeValue.toFixed(2); if (newWeeklyIncomeValue !== prevWeeklyIncomeValue) { flashStatUpdate(weeklyIncomeDisplay, 'neutral'); prevWeeklyIncomeValue = newWeeklyIncomeValue; }
-             weekDisplay.textContent = currentWeek;
+            const newBudgetValue = Math.round(budget); const newAudienceValue = totalInstalls; const newDailyIncomeValue = dailyIncome; const newWeeklyIncomeValue = weeklyIncome; const currentWeek = Math.ceil(day / 7);
+            if (newBudgetValue !== prevBudgetValue) { budgetDisplay.textContent = newBudgetValue; flashStatUpdate(budgetDisplay, newBudgetValue > prevBudgetValue ? 'positive' : 'negative'); prevBudgetValue = newBudgetValue; }
+            if (newAudienceValue !== prevAudienceValue) { audienceDisplay.textContent = newAudienceValue; flashStatUpdate(audienceDisplay, newAudienceValue > prevAudienceValue ? 'positive' : 'negative'); prevAudienceValue = newAudienceValue; peakAudience = Math.max(peakAudience, newAudienceValue); }
+            dailyIncomeDisplay.textContent = newDailyIncomeValue.toFixed(2); if (newDailyIncomeValue !== prevDailyIncomeValue) { flashStatUpdate(dailyIncomeDisplay, 'neutral'); prevDailyIncomeValue = newDailyIncomeValue; }
+            weeklyIncomeDisplay.textContent = newWeeklyIncomeValue.toFixed(2); if (newWeeklyIncomeValue !== prevWeeklyIncomeValue) { flashStatUpdate(weeklyIncomeDisplay, 'neutral'); prevWeeklyIncomeValue = newWeeklyIncomeValue; }
+            weekDisplay.textContent = currentWeek;
 
-            currentCreativeCost = calculateCreativeCost();
+            currentCreativeCost = calculateCreativeCost(); // Recalculate potentially changed cost
             creativeCostDisplay.textContent = currentCreativeCost > 0 ? currentCreativeCost : "---";
 
-            // Campaign Cost Input Validation
+            // Campaign Cost Input Validation & State Update
              const currentMinBudget = parseInt(campaignCostInput.min); const currentStep = parseInt(campaignCostInput.step); let campaignCost = parseInt(campaignCostInput.value) || currentMinBudget; if (isNaN(campaignCost) || campaignCost < currentMinBudget) campaignCost = currentMinBudget; campaignCost = Math.round(campaignCost / currentStep) * currentStep; campaignCost = Math.max(currentMinBudget, campaignCost);
             const totalCost = currentCreativeCost + campaignCost; const canAfford = budget >= totalCost; const allSelected = selectedStyle && selectedGameplay && selectedCharacter && selectedCTA;
 
@@ -216,8 +223,7 @@
         }
 
         function updatePreview() {
-             if (gameIsOver) return; // Prevent updates after game over
-             const iS = document.querySelector('#style-cards .card.selected')?.dataset.icon||'❓'; const iG = document.querySelector('#gameplay-cards .card.selected')?.dataset.icon||'❓'; const iC = document.querySelector('#character-cards .card.selected')?.dataset.icon||'❓'; const iT = document.querySelector('#cta-cards .card.selected')?.dataset.icon||'❓'; previewIconsDiv.textContent = `${iS} + ${iG} + ${iC} + ${iT}`;
+            if (gameIsOver) return; const iS = document.querySelector('#style-cards .card.selected')?.dataset.icon||'❓'; const iG = document.querySelector('#gameplay-cards .card.selected')?.dataset.icon||'❓'; const iC = document.querySelector('#character-cards .card.selected')?.dataset.icon||'❓'; const iT = document.querySelector('#cta-cards .card.selected')?.dataset.icon||'❓'; previewIconsDiv.textContent = `${iS} + ${iG} + ${iC} + ${iT}`;
         }
 
         function calculateAdEffectiveness(gameplay, character, cta) {
@@ -238,7 +244,7 @@
                  creativeCostInflationFactor += dailyInflationRate; incomeDecayFactor = Math.max(minIncomeFactor, incomeDecayFactor - dailyDecayRate); day++;
              }
              return { incomeEarnedThisWeek: parseFloat(totalIncomeThisWeek.toFixed(2)), churnedThisWeek: totalChurnThisWeek };
-        }
+         }
 
         // --- CORE TURN LOGIC: LAUNCH CAMPAIGN ---
         function launchCampaign() {
@@ -246,10 +252,10 @@
             resultsDiv.classList.remove('visible');
 
             const campaignCost = parseInt(campaignCostInput.value);
-            const creativeCost = currentCreativeCost;
+            const creativeCost = currentCreativeCost; // Already calculated with inflation
             const totalCost = creativeCost + campaignCost;
 
-            // Check funds again (should be covered by updateDisplay check, but safe)
+            // Final funds check
             if (budget < totalCost) { setResultMessage("Недостаточно средств!", "bad-result"); resultsDiv.classList.add('visible'); updateDisplay(); return; }
 
             // Creative Fatigue
@@ -295,8 +301,8 @@
             const cpi = installsGained > 0 ? (totalCost / installsGained).toFixed(2) : "---"; cpiDisplay.textContent = `${cpi} $`; incomeReceivedDisplay.textContent = incomeEarned.toFixed(2);
             resultsDiv.classList.add('visible');
 
-            // Final Check & Update UI for next turn
-             updateDisplay(); // Call updateDisplay AFTER results are shown and BEFORE next turn's checks
+            // Update UI for next turn (this will also check for game over again)
+             updateDisplay();
         }
 
         // --- CORE TURN LOGIC: SKIP WEEK ---
@@ -318,19 +324,21 @@
              if(fatiguePenaltyEl) fatiguePenaltyEl.textContent = '0%'; cpiDisplay.textContent = "---"; incomeReceivedDisplay.textContent = incomeEarned.toFixed(2);
              resultsDiv.classList.add('visible');
 
-            // Check Game Over & Update UI for next turn
-             updateDisplay(); // Call updateDisplay AFTER results and BEFORE next turn's checks
+            // Update UI for next turn (this will also check for game over again)
+             updateDisplay();
         }
 
         function setResultMessage(message, className = "") {
-            if(resultMessageDisplay) resultMessageDisplay.textContent = message;
-            if(resultMessageDisplay) resultMessageDisplay.className = 'result-message'; // Base class first
-            if (className && resultMessageDisplay) { resultMessageDisplay.classList.add(className); }
+            if(resultMessageDisplay) {
+                resultMessageDisplay.textContent = message;
+                resultMessageDisplay.className = 'result-message'; // Base class first
+                if (className) { resultMessageDisplay.classList.add(className); }
+            }
          }
 
         function endGame(reason) {
-            if (gameIsOver) return; // Prevent multiple calls
-            gameIsOver = true; // Set the flag
+            if (gameIsOver) return;
+            gameIsOver = true;
             finalLossReason = reason;
 
             launchButton.disabled = true; launchButton.textContent = "Игра окончена";
@@ -339,12 +347,11 @@
             resultsDiv.classList.remove('visible');
             clearSelections();
 
-            // Final calculation & Stats population
             const finalWeek = Math.ceil(day / 7);
              peakAudience = Math.max(peakAudience, totalInstalls);
              const totalSpent = totalCreativeSpent + totalCampaignSpent;
-             const approxTotalGenerated = peakAudience > 0 ? peakAudience : 1; // Avoid division by zero
-             const averageCpi = totalSpent > 0 ? (totalSpent / approxTotalGenerated) : 0;
+             const approxTotalGenerated = peakAudience > 0 ? peakAudience : 1; // Avoid division by zero for CPI calc
+             const averageCpi = totalSpent > 0 && approxTotalGenerated > 0 ? (totalSpent / approxTotalGenerated) : 0;
 
             // Safely update modal elements
              if (modalReasonEl) modalReasonEl.textContent = finalLossReason;
@@ -358,11 +365,8 @@
              if (modalTotalCampaignCostEl) modalTotalCampaignCostEl.textContent = Math.round(totalCampaignSpent);
              if (modalAverageCpiEl) modalAverageCpiEl.textContent = averageCpi > 0 ? averageCpi.toFixed(2) : "N/A";
 
-            // Show modal and overlay
              if (statsOverlay) statsOverlay.classList.add('visible');
              if (statsModal) statsModal.classList.add('visible');
-
-            // Show restart button placeholder
              if (gameOverPlaceholder) gameOverPlaceholder.classList.add('visible');
         }
 
